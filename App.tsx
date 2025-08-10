@@ -222,6 +222,10 @@ const App: React.FC = () => {
           onFieldChange={handleFieldChange}
         />
         
+        <div className="my-6">
+            <StatBoxGrid resources={characterData.resources} onResourceChange={handleResourceChange} />
+        </div>
+
         <div className="relative">
             <PageSwitcher currentPage={currentPage} setCurrentPage={setCurrentPage} />
             <button
@@ -235,100 +239,103 @@ const App: React.FC = () => {
 
 
         {currentPage === 'page1' && (
-             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
-              <div className="flex flex-col gap-8">
-                <AttributeSection title="Atributos" attributes={Object.entries(characterData.attributes).map(([name, rating]) => ({name, rating}))} onRatingChange={handleAttributeChange} />
-                <StatBoxGrid resources={characterData.resources} onResourceChange={handleResourceChange} />
-              </div>
-    
-              <div className="flex flex-col gap-8">
-                 <div className="bg-black/20 p-4 rounded-lg border border-gray-700/50">
-                    <h2 className="text-2xl font-serif text-brand-red-400 border-b border-brand-red-700/50 pb-2 mb-3">Fraqueza de Classe</h2>
-                    <h3 className="text-lg font-bold text-brand-parchment-light">{characterData.classWeakness.name}</h3>
-                    <p className="text-sm text-brand-parchment-dark mt-1">{characterData.classWeakness.description}</p>
+             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mt-8">
+                <div className="lg:col-span-2">
+                    <AttributeSection title="Atributos" attributes={Object.entries(characterData.attributes).map(([name, rating]) => ({name, rating}))} onRatingChange={handleAttributeChange} />
                 </div>
-              </div>
-    
-              <div className="flex flex-col gap-8">
-                 <div className="bg-black/20 p-4 rounded-lg border border-gray-700/50">
-                    <h2 className="text-2xl font-serif text-brand-red-400 border-b border-brand-red-700/50 pb-2 mb-3">Habilidades de Classe</h2>
-                    <div className="space-y-4">
-                        {characterData.classAbilities.map(ability => (
-                            <div key={ability.name}>
-                                <h3 className="font-bold text-brand-parchment-light flex justify-between items-baseline">
-                                    <span>{ability.name}</span>
-                                    <span className="text-xs font-sans uppercase tracking-widest text-brand-red-400/80">{ability.type}{ability.cost ? ` (${ability.cost})` : ''}</span>
-                                </h3>
-                                <p className="text-sm text-brand-parchment-dark mt-1">{ability.description}</p>
-                            </div>
-                        ))}
+        
+                <div className="lg:col-span-3 flex flex-col gap-8">
+                    <div className="bg-black/20 p-4 rounded-lg border border-gray-700/50">
+                        <h2 className="text-2xl font-serif text-brand-red-400 border-b border-brand-red-700/50 pb-2 mb-3">Fraqueza de Classe</h2>
+                        <h3 className="text-lg font-bold text-brand-parchment-light">{characterData.classWeakness.name}</h3>
+                        <p className="text-sm text-brand-parchment-dark mt-1">{characterData.classWeakness.description}</p>
+                    </div>
+
+                    <div className="bg-black/20 p-4 rounded-lg border border-gray-700/50">
+                        <h2 className="text-2xl font-serif text-brand-red-400 border-b border-brand-red-700/50 pb-2 mb-3">Habilidades de Classe</h2>
+                        <div className="space-y-4">
+                            {characterData.classAbilities.map(ability => (
+                                <div key={ability.name}>
+                                    <h3 className="font-bold text-brand-parchment-light flex justify-between items-baseline">
+                                        <span>{ability.name}</span>
+                                        <span className="text-xs font-sans uppercase tracking-widest text-brand-red-400/80">{ability.type}{ability.cost ? ` (${ability.cost})` : ''}</span>
+                                    </h3>
+                                    <p className="text-sm text-brand-parchment-dark mt-1">{ability.description}</p>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
               </div>
-            </div>
         )}
 
         {currentPage === 'page2' && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
-                <div className="flex flex-col gap-6">
-                    {characterData.skills.slice(0, 2).map(group => (
-                      <AttributeSection 
-                        key={group.attribute} 
-                        title={`Perícias (${group.attribute})`} 
-                        attributes={group.skills} 
-                        onRatingChange={handleSkillChange} 
-                        attributeValue={characterData.attributes[group.attribute]}
-                        small 
-                      />
-                    ))}
-                </div>
+            <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+                    <div className="flex flex-col gap-6">
+                        {characterData.skills.slice(0, 2).map(group => (
+                          <AttributeSection 
+                            key={group.attribute} 
+                            title={`Perícias (${group.attribute})`} 
+                            attributes={group.skills} 
+                            onRatingChange={handleSkillChange} 
+                            attributeValue={characterData.attributes[group.attribute]}
+                            small 
+                          />
+                        ))}
+                    </div>
 
-                <div className="flex flex-col gap-6">
-                    {characterData.skills.slice(2, 4).map(group => (
-                        <AttributeSection 
-                          key={group.attribute} 
-                          title={`Perícias (${group.attribute})`} 
-                          attributes={group.skills} 
-                          onRatingChange={handleSkillChange} 
-                          attributeValue={characterData.attributes[group.attribute]}
-                          small 
-                        />
-                    ))}
-                </div>
+                    <div className="flex flex-col gap-6">
+                        {characterData.skills.slice(2, 4).map(group => (
+                            <AttributeSection 
+                              key={group.attribute} 
+                              title={`Perícias (${group.attribute})`} 
+                              attributes={group.skills} 
+                              onRatingChange={handleSkillChange} 
+                              attributeValue={characterData.attributes[group.attribute]}
+                              small 
+                            />
+                        ))}
+                    </div>
 
-                <div className="flex flex-col gap-6">
-                    {characterData.skills.slice(4, 5).map(group => (
-                        <AttributeSection 
-                          key={group.attribute} 
-                          title={`Perícias (${group.attribute})`} 
-                          attributes={group.skills} 
-                          onRatingChange={handleSkillChange} 
-                          attributeValue={characterData.attributes[group.attribute]}
-                          small 
-                        />
-                    ))}
-                    <AttributeSection title="Perícias Especiais" attributes={characterData.specialSkills} onRatingChange={handleSkillChange} small />
-                     <div className="bg-black/20 p-4 rounded-lg border border-gray-700/50 h-full">
-                       <h2 className="text-xl font-serif text-brand-red-400 border-b border-brand-red-700/50 pb-2 mb-3">
-                        Equipamento & Anotações
-                       </h2>
-                       <div className="text-brand-parchment-dark space-y-2">
-                            <h3 className="font-bold uppercase text-sm tracking-wider">Equipamento</h3>
+                    <div className="flex flex-col gap-6">
+                        {characterData.skills.slice(4, 5).map(group => (
+                            <AttributeSection 
+                              key={group.attribute} 
+                              title={`Perícias (${group.attribute})`} 
+                              attributes={group.skills} 
+                              onRatingChange={handleSkillChange} 
+                              attributeValue={characterData.attributes[group.attribute]}
+                              small 
+                            />
+                        ))}
+                        <AttributeSection title="Perícias Especiais" attributes={characterData.specialSkills} onRatingChange={handleSkillChange} small />
+                    </div>
+                </div>
+                 <div className="mt-8 bg-black/20 p-4 rounded-lg border border-gray-700/50 w-full">
+                   <h2 className="text-xl font-serif text-brand-red-400 border-b border-brand-red-700/50 pb-2 mb-4">
+                    Equipamento & Anotações
+                   </h2>
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                        <div>
+                            <h3 className="font-bold uppercase text-sm tracking-wider mb-2 text-brand-parchment-dark">Equipamento</h3>
                             <textarea
-                                className="w-full h-24 bg-brand-parchment-dark/10 p-2 text-sm rounded border border-gray-600 focus:ring-1 focus:ring-brand-red-500 focus:border-brand-red-500 transition"
+                                className="w-full h-48 bg-brand-parchment-dark/10 p-2 text-sm rounded border border-gray-600 focus:ring-1 focus:ring-brand-red-500 focus:border-brand-red-500 transition resize-y"
                                 value={characterData.equipment.join('\n')}
                                 onChange={(e) => handleTextareaChange('equipment', e.target.value)}
                             />
-                            <h3 className="font-bold uppercase text-sm tracking-wider pt-3">Anotações</h3>
+                        </div>
+                        <div>
+                            <h3 className="font-bold uppercase text-sm tracking-wider mb-2 text-brand-parchment-dark">Anotações</h3>
                              <textarea
-                                className="w-full h-32 bg-brand-parchment-dark/10 p-2 text-sm rounded border border-gray-600 focus:ring-1 focus:ring-brand-red-500 focus:border-brand-red-500 transition"
+                                className="w-full h-48 bg-brand-parchment-dark/10 p-2 text-sm rounded border border-gray-600 focus:ring-1 focus:ring-brand-red-500 focus:border-brand-red-500 transition resize-y"
                                 value={characterData.notes}
                                 onChange={(e) => handleTextareaChange('notes', e.target.value)}
                             />
-                       </div>
-                    </div>
+                        </div>
+                   </div>
                 </div>
-            </div>
+            </>
         )}
       </main>
     </div>
