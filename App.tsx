@@ -207,7 +207,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen text-brand-parchment-light p-4 sm:p-6 lg:p-8">
-      <main className="max-w-7xl mx-auto bg-gray-800/60 backdrop-blur-sm shadow-2xl shadow-brand-red-900/40 rounded-lg border-2 border-gray-700/50 p-6 md:p-8">
+      <main className="max-w-5xl mx-auto bg-gray-800/60 backdrop-blur-sm shadow-2xl shadow-brand-red-900/40 rounded-lg border-2 border-gray-700/50 p-6 md:p-8">
         <CharacterHeader 
           name={characterData.name} 
           concept={characterData.concept} 
