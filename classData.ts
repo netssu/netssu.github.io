@@ -1,6 +1,11 @@
-import type { CharacterClass, Ability } from './types';
+import type { CharacterClass, Ability, AttributeName, SkillName, SpecialSkillName } from './types';
 
 interface ClassData {
+    attribute: AttributeName;
+    bonuses: {
+        attribute: AttributeName;
+        skills: (SkillName | SpecialSkillName)[];
+    };
     abilities: Ability[];
     weakness: {
         name: string;
@@ -8,73 +13,103 @@ interface ClassData {
     };
 }
 
-export const CHARACTER_CLASSES: CharacterClass[] = ['Lutador', 'Atirador', 'Erudito', 'Engenhoqueiro', 'Rastreador', 'Ocultista'];
+export const CHARACTER_CLASSES: CharacterClass[] = ['Lutador', 'Atirador', 'Rastreador', 'Engenhoqueiro', 'Erudito', 'Ocultista'];
 
 export const CLASS_DATA: Record<CharacterClass, ClassData> = {
     'Lutador': {
+        attribute: 'Corpo',
+        bonuses: {
+            attribute: 'Corpo',
+            skills: ['Corpo a Corpo', 'Atletismo'],
+        },
         abilities: [
-            { name: 'Briga de Bar', type: 'Passiva', description: 'ignora penalidades ao usar armas improvisadas; ataques desarmados causam +1 de dano base.' },
-            { name: 'Casca Grossa', type: 'Passiva', description: 'reduz todo dano físico recebido em 1 após rolagem de dano do inimigo.' },
-            { name: 'Empurrão Violento', type: 'Ativa', cost: '2 PA', description: 'após acertar um ataque corpo a corpo, empurra o alvo metros iguais ao valor de Corpo; alvo testa Agilidade (CD 2) ou fica Derrubado.' }
+            { name: 'Golpe de Pressão', type: 'Ativa', cost: '3 PA', description: 'Se acertar com Margem ≥ 2, aplica Atordoar Leve além do dano.' },
+            { name: 'Resistência Bruta', type: 'Passiva', description: '1×/turno, ignora 1 de dano de um ataque corpo a corpo recebido.' },
+            { name: 'Ameaça Constante', type: 'Passiva', description: '+1 dado em Ataques de Oportunidade (melee).' }
         ],
         weakness: {
-            name: 'Raiva Cega',
-            description: 'se receber 3 ou mais de dano em um único ataque, sofre –2 dados ao atacar qualquer inimigo que não seja o que causou esse dano no próximo turno (mínimo 1 dado).'
+            name: 'Instinto Focado',
+            description: 'Se receber 4+ de dano num único ataque, no próximo turno sofre –2 dados para atacar qualquer alvo que não seja o agressor (mín. 1).'
         }
     },
     'Atirador': {
+        attribute: 'Agilidade',
+        bonuses: {
+            attribute: 'Agilidade',
+            skills: ['Armas de Fogo', 'Investigação'],
+        },
         abilities: [
-            { name: 'Sempre Preparado', type: 'Passiva', description: 'sacar ou guardar arma de fogo principal não custa PA.' },
-            { name: 'Mira Rápida', type: 'Ativa', cost: '1 PA', description: 'anula penalidade de cobertura parcial ou mira em parte específica do corpo sem aumentar dificuldade.' },
-            { name: 'Recarga Tática', type: 'Passiva', description: 'primeira recarga no combate custa 1 PA a menos (mín. 1 PA).' }
+            { name: 'Mira Certeira', type: 'Ativa', cost: '2 PA', description: 'No próximo disparo, +2 dados e ignora –1 por distância.' },
+            { name: 'Disparo de Reação', type: 'Reação', cost: '3 PA', description: 'Ataque imediato quando um inimigo entra no seu alcance; –1 dado nesse disparo.' },
+            { name: 'Tiro Letal', type: 'Passiva', description: 'Em crítico com arma de fogo, ignora +1 AR adicional.' }
         ],
         weakness: {
-            name: 'Visão de Túnel',
-            description: 'após atacar um alvo, sofre –1 dado para perceber outras ameaças até mudar de alvo ou encerrar o combate.'
+            name: 'Visão de Túnel em Combate',
+            description: 'Ao gastar 4 PA ou mais atacando o mesmo alvo em um turno, sofre −2 dados para notar ameaças fora de sua linha de visão até o próximo turno e não pode realizar Ataques de Oportunidade contra outros inimigos.'
         }
     },
-    'Erudito': {
+     'Rastreador': {
+        attribute: 'Percepção',
+        bonuses: {
+            attribute: 'Percepção',
+            skills: ['Sobrevivência', 'Rastreamento'],
+        },
         abilities: [
-            { name: 'Enciclopédia Ambulante', type: 'Passiva', description: '1×/sessão pode declarar que "já leu sobre isso" e obter informação crucial do mestre sem teste.' },
-            { name: 'Análise de Fraqueza', type: 'Ativa', cost: '3 PA', description: 'teste Inteligência + Ocultismo; sucesso concede +1 dado nos ataques de todos os aliados contra a criatura até o fim da rodada.' },
-            { name: 'Ritualista Improvisado', type: 'Passiva', description: 'pode tentar rituais sem fórmula completa com dificuldade maior; tempo de preparação de rituais conhecidos –25%.' }
+            { name: 'Caça Implacável', type: 'Passiva', description: 'Ignora –1 dado por terreno difícil ao rastrear/perseguir.' },
+            { name: 'Tiro Preciso de Caçador', type: 'Ativa', cost: '3 PA', description: 'Se acertar com Margem ≥ 2, aplica um efeito de Tiro Mirado sem custo extra (cabeça, perna, braço, etc.).' },
+            { name: 'Olhos Afiados', type: 'Passiva', description: '+1 dado em Percepção contra emboscadas ou alvos ocultos.' }
         ],
         weakness: {
-            name: 'Subestimação Física',
-            description: 'quando atacado corpo a corpo por inimigo maior/mais forte, sofre –1 dado ao Bloquear ou Contra-atacar até o fim da cena.'
+            name: 'Foco na Presa',
+            description: 'Se errar o mesmo alvo duas vezes seguidas, sofre –1 dado em todos os ataques até acertá-lo ou trocar de alvo.'
         }
     },
     'Engenhoqueiro': {
+        attribute: 'Inteligência',
+        bonuses: {
+            attribute: 'Inteligência',
+            skills: ['Tecnologia', 'Ofício (Ferramentas)'],
+        },
         abilities: [
-            { name: 'Improvisador Nato', type: 'Passiva', description: 'ignora penalidades por uso não convencional de ferramentas; pode criar gadget simples em cena.' },
-            { name: 'Armadilhas de Campo', type: 'Ativa', cost: '3 PA', description: 'instala armadilha improvisada (1 dano + Atordoar Leve ou Derrubar se Margem ≥ 2).' },
-            { name: 'Manutenção Rápida', type: 'Passiva', description: '1×/sessão, consertar arma/equipamento custa 0 PA.' }
+            { name: 'Improviso Rápido', type: 'Ativa', cost: '3 PA', description: 'Cria um gadget simples que causa 1 dano e aplica Derrubar ou Atordoar Leve (sua escolha) se Margem ≥ 2.' },
+            { name: 'Manutenção Expressa', type: 'Passiva', description: '–1 PA para recarregar ou reparar (sinergia com a regra de Desgaste).' },
+            { name: 'Truque Mecânico', type: 'Ativa', cost: '2 PA', description: 'Desalinha uma arma/dispositivo inimigo; o alvo gasta 2 PA para corrigir antes de usar novamente.' }
         ],
         weakness: {
-            name: 'Dependente do Equipamento',
-            description: 'se passar 2 turnos sem usar ferramenta/gadget/arma especial, sofre –1 dado em todas as ações até improvisar (1 PA).'
+            name: 'Dependente de Ferramentas',
+            description: 'Sem kit de ferramentas ou item tecnológico em mãos, sofre –1 dado em ações que usem Inteligência.'
         }
     },
-    'Rastreador': {
+    'Erudito': {
+        attribute: 'Inteligência',
+        bonuses: {
+            attribute: 'Inteligência',
+            skills: ['Ocultismo', 'Investigação'],
+        },
         abilities: [
-            { name: 'Caçador de Rastros', type: 'Passiva', description: '+1 dado em testes para seguir pistas ou identificar sinais ambientais.' },
-            { name: 'Conhecimento de Terreno', type: 'Passiva', description: 'ignora penalidades de terreno difícil em áreas naturais.' },
-            { name: 'Golpe de Emboscada', type: 'Ativa', cost: '3 PA', description: 'ataque corpo a corpo ou à distância contra alvo que não o viu ganha +2 dados e +1 dano.' }
+            { name: 'Enciclopédia Ambulante', type: 'Passiva', cost: '1×/sessão', description: 'Obtém informação crucial do Mestre sobre criatura/ritual/objeto sem rolagem (fraqueza, procedimento, gatilho).' },
+            { name: 'Análise de Fraqueza', type: 'Ativa', cost: '3 PA', description: 'Teste INT + Ocultismo (CD do alvo); sucesso: todos os aliados têm +1 dado ao atacar aquele alvo até o fim da rodada.' },
+            { name: 'Lógica Fria', type: 'Passiva', description: '+1 dado em Resistência Mental contra medo/confusão.' }
         ],
         weakness: {
-            name: 'Peixe Fora d’Água',
-            description: 'em áreas urbanas densas, sofre –1 dado em Percepção e Movimentação.'
+            name: 'Subestimação Física',
+            description: 'Quando engajado em melee por inimigo maior/mais forte, sofre –1 dado para Bloquear e Contra-atacar.'
         }
     },
     'Ocultista': {
+        attribute: 'Inteligência',
+        bonuses: {
+            attribute: 'Inteligência',
+            skills: ['Ocultismo', 'Demonologia'],
+        },
         abilities: [
-            { name: 'Intuição Sobrenatural', type: 'Passiva', description: 'mestre pode passar pequenas dicas sobre presença ou intenção de entidades próximas.' },
-            { name: 'Identificação Mística', type: 'Ativa', cost: '3 PA', description: 'teste Inteligência + Ocultismo para identificar tipo, fraquezas e resistências de criatura sobrenatural.' },
-            { name: 'Foco Ritualístico', type: 'Passiva', description: '+1 dado em rituais que demandem componentes especiais.' }
+            { name: 'Olho do Além', type: 'Passiva', description: '+1 dado para detectar presença sobrenatural (Investigação/Ocultismo, pistas, sinais).' },
+            { name: 'Símbolos de Proteção', type: 'Ativa', cost: '2 PA | 1×/combate', description: 'Ganha AR 2 contra o próximo ataque sobrenatural que sofrer.' },
+            { name: 'Ritual de Contenção', type: 'Ativa', cost: '3 PA', description: 'Teste INT + Ocultismo CD 2 para criar uma barreira curta (1×1m) por 1 turno que dificulta passagem de criaturas sobrenaturais (elas precisam gastar +2 PA para atravessar).' }
         ],
         weakness: {
-            name: 'Olhar do Outro Lado',
-            description: 'ao usar magia/ritual, role 1d6; com resultado 1, fica Atordoado (–2 PA) no próximo turno.'
+            name: 'Vulnerável ao Oculto',
+            description: 'Recebe +1 dano de ataques mágicos/sobrenaturais.'
         }
     }
 };

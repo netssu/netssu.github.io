@@ -17,9 +17,52 @@ export interface Magic {
   notes: string;
 }
 
+// Nova definição para Arma
+export interface Weapon {
+  id:string;
+  name: string;
+  damage: string;
+  type: string;
+  properties: string;
+  capacity: string;
+}
+
+// Equipamento de Armadura
+export type VestType = 'Nenhum' | 'Leve' | 'Pesado';
+export interface Armor {
+    vest: VestType;
+    helmet: boolean;
+}
+
+// Definição do Monstro
+export interface MonsterAttack {
+  id: string;
+  description: string;
+}
+
+export interface Monster {
+  id: string;
+  name: string;
+  type: string;
+  threat: string; // Ameaça
+  pv: string;
+  pa: string;
+  attributes: string;
+  skills: string;
+  armor: string;
+  attacks: MonsterAttack[];
+  reactions: string;
+  specialAbilities: string;
+  weaknesses: string;
+  behavior: string; // IA
+  loot: string; // Saque
+}
+
 // Informações do Personagem
 export type CharacterClass = 'Lutador' | 'Atirador' | 'Erudito' | 'Engenhoqueiro' | 'Rastreador' | 'Ocultista';
 export type Race = 'Humano' | 'Demônio';
+export type BackgroundName = 'Nenhum' | 'Corpo Treinado' | 'Artesão Prático' | 'Pesquisador' | 'Sobrevivente' | 'Especialista em Acesso' | 'Manipulador' | 'Conhecedor de Submundos';
+
 
 // Atributos
 export type AttributeName = 'Corpo' | 'Agilidade' | 'Percepção' | 'Inteligência' | 'Presença';
@@ -38,10 +81,13 @@ export type SkillName =
   // Presença
   | 'Persuasão' | 'Intimidação' | 'Enganação' | 'Liderança';
 
-export type SpecialSkillName = 'Latim' | 'Lockpick' | 'Demonologia' | 'Armas Exóticas';
+export type SpecialSkillName = 'Latim' | 'Lockpick' | 'Demonologia' | 'Armas Exóticas' | 'Sobrevivência' | 'Contatos' | 'Ofício (Ferramentas)';
 
 export interface Skill extends RatedItem {
   name: SkillName | SpecialSkillName;
+  trained?: boolean;
+  mastered?: boolean;
+  classBonus?: boolean;
 }
 
 export type SkillGroup = {
@@ -51,8 +97,8 @@ export type SkillGroup = {
 
 // Habilidades
 export interface Ability {
-  name: string;
-  type: 'Passiva' | 'Ativa';
+  name:string;
+  type: 'Passiva' | 'Ativa' | 'Reação';
   cost?: string;
   description: string;
 }
@@ -69,8 +115,10 @@ export interface CharacterSheetData {
   name: string;
   concept: string;
   characterClass: CharacterClass;
+  background: BackgroundName;
   race: Race;
   xp: number;
+  money: string;
   portraitUrl: string;
   birthday: string;
   hometown: string;
@@ -86,6 +134,10 @@ export interface CharacterSheetData {
   };
   resources: Resource[];
   magic: Magic[];
+  weapons: Weapon[];
   equipment: string[];
   notes: string;
+  armor: Armor;
+  monsters: Monster[];
+  showMonsters: boolean;
 }
